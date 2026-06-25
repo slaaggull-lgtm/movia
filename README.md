@@ -29,7 +29,6 @@
 - [🗄️ Setting up MongoDB Atlas (Free)](#️-setting-up-mongodb-atlas-free)
 - [☁️ Deploying to Production](#️-deploying-to-production)
 - [🧭 API Reference](#-api-reference)
-- [🗂️ 4–5 Day Build Plan](#️-45-day-build-plan)
 - [🐞 Troubleshooting](#-troubleshooting)
 - [📜 License](#-license)
 
