@@ -29,7 +29,6 @@
 - [🗄️ MongoDB Atlas Kurulumu (Ücretsiz)](#️-mongodb-atlas-kurulumu-ücretsiz)
 - [☁️ Canlıya Alma (Deployment)](#️-canlıya-alma-deployment)
 - [🧭 API Referansı](#-api-referansı)
-- [🗂️ 4–5 Günlük Yapım Planı](#️-45-günlük-yapım-planı)
 - [🐞 Sorun Giderme](#-sorun-giderme)
 - [📜 Lisans](#-lisans)
 
