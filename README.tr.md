@@ -316,41 +316,6 @@ Temel URL: `/api`
 
 ---
 
-## 🗂️ 4–5 Günlük Yapım Planı
-
-Bu projeyi bir ödev/portfolyo projesi olarak yapıyorsan gerçekçi bir takvim:
-
-### 📅 1. Gün — Kurulum & Backend Temelleri
-- GitHub reposu oluştur, proje yapısını kur
-- MongoDB Atlas + TMDB API anahtarını ayarla
-- `User` & `WatchItem` modellerini oluştur
-- Auth'u (kayıt/giriş/JWT) oluştur ve Postman/Thunder Client ile test et
-
-### 📅 2. Gün — Backend Çekirdek Mantığı
-- Ruh hali → tür eşleştirme mantığını oluştur
-- Öneri motorunu oluştur (TMDB discover + details)
-- Watch endpoint'lerini oluştur (favori/izleme listesi/izlendi, puanlar, notlar)
-- İstatistik + rozet mantığını oluştur
-- Her endpoint'i baştan sona test et
-
-### 📅 3. Gün — Frontend Temelleri
-- React + Vite + Tailwind + karanlık modu kur
-- Navbar, Auth sayfalarını (Giriş/Kayıt), routing'i oluştur
-- Ruh hali seçim sayfasını & Quiz akışını oluştur
-- Backend auth endpoint'lerine bağlan
-
-### 📅 4. Gün — Frontend Özellikleri
-- MovieCard bileşeniyle Öneriler sayfasını oluştur
-- Profil, Favoriler, İzleme Listesi, Geçmiş sayfalarını oluştur
-- Film DNA pasta grafiği + haftalık çubuk grafikli İstatistik sayfasını oluştur
-- Rozetler sayfasını oluştur
-
-### 📅 5. Gün — Cilalama & Canlıya Alma
-- Responsive tasarım kontrolü (mobil testi)
-- Hata düzeltmeleri & uç durumlar (boş durumlar, yükleme durumları, hatalar)
-- GitHub'a push et
-- Backend'i (Render) + frontend'i (Vercel) deploy et + CORS'u bağla
-- Son canlı test ve demo kaydı 🎥
 
 ---
 
@@ -392,8 +357,8 @@ Bu proje [MIT Lisansı](./LICENSE) altında lisanslanmıştır — kullanmak, de
 
 <div align="center">
 
-💜 ve 🍿 ile yapıldı — **Movia**
+💜  ile yapıldı — **Movia**
 
-🇬🇧 [View the English README](./README.md)
+
 
 </div>
