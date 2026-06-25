@@ -4,7 +4,7 @@
 
 ### Movie & TV show recommendations based on your **mood**, **taste**, and **viewing habits**
 
-🇹🇷 [Bu dosyayı Türkçe oku](./README.tr.md)
+🇹🇷 [Bu dosyayı Türkçe okuyun](./README.tr.md)
 
 ![Node](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=node.js&logoColor=white)
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black)
@@ -316,41 +316,7 @@ Base URL: `/api`
 
 ---
 
-## 🗂️ 4–5 Day Build Plan
 
-A realistic schedule if you're building this as a course/portfolio project:
-
-### 📅 Day 1 — Setup & Backend Foundations
-- Create GitHub repo, set up project structure
-- Set up MongoDB Atlas + TMDB API key
-- Build `User` & `WatchItem` models
-- Build auth (register/login/JWT) and test with Postman/Thunder Client
-
-### 📅 Day 2 — Backend Core Logic
-- Build mood → genre mapping logic
-- Build the recommendation engine (TMDB discover + details)
-- Build watch endpoints (favorite/watchlist/watched, ratings, notes)
-- Build stats + badges logic
-- Test every endpoint end-to-end
-
-### 📅 Day 3 — Frontend Foundations
-- Set up React + Vite + Tailwind + dark mode
-- Build Navbar, Auth pages (Login/Register), routing
-- Build Mood selection page & Quiz flow
-- Connect to backend auth endpoints
-
-### 📅 Day 4 — Frontend Features
-- Build Recommendations page with MovieCard component
-- Build Profile page, Favorites, Watchlist, History pages
-- Build Stats page with Film DNA pie chart + weekly bar chart
-- Build Badges page
-
-### 📅 Day 5 — Polish & Deploy
-- Responsive design pass (mobile testing)
-- Bug fixes & edge cases (empty states, loading states, errors)
-- Push to GitHub
-- Deploy backend (Render) + frontend (Vercel) + connect CORS
-- Final live testing & demo recording 🎥
 
 ---
 
@@ -392,8 +358,8 @@ This project is licensed under the [MIT License](./LICENSE) — free to use, mod
 
 <div align="center">
 
-Made with 💜 and 🍿 — **Movia**
+Made with 💜  — **Movia**
 
-🇹🇷 [Türkçe README'yi görüntüle](./README.tr.md)
+
 
 </div>
