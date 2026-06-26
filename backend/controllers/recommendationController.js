@@ -78,16 +78,17 @@ export const getRecommendations = async (req, res) => {
 
 // Public endpoint - no login required. Used by the "Free Trial / Misafir Modu"
 // flow so visitors can try Movia before creating an account.
-// Uses mood only (no personal quiz data) since there's no user yet.
+// Accepts an optional quiz object (genre/type/duration preferences collected
+// in the same session) so guest recommendations feel personalized too.
 export const getGuestRecommendations = async (req, res) => {
   try {
-    const { mood } = req.body;
+    const { mood, quiz } = req.body;
 
     if (!mood) {
       return res.status(400).json({ message: "Ruh hali belirtilmedi." });
     }
 
-    const detailed = await buildRecommendations(mood, {});
+    const detailed = await buildRecommendations(mood, quiz || {});
 
     if (detailed.length === 0) {
       return res.status(404).json({ message: "Uygun öneri bulunamadı, lütfen tekrar deneyin." });

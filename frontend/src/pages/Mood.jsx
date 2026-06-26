@@ -23,8 +23,9 @@ const Mood = () => {
     setLoading(true);
     try {
       if (isGuest) {
-        // Misafir modu: kişiselleştirme/kayıt yok, direkt önerilere git.
-        navigate("/recommendations", { state: { mood: moodKey } });
+        // Misafir modu: hesap/kayıt yok ama artık zevkine göre kişiselleştirme
+        // için kısa testi de gösteriyoruz (sadece tarayıcı hafızasında tutulur).
+        navigate("/quiz", { state: { mood: moodKey, guest: true } });
         return;
       }
 

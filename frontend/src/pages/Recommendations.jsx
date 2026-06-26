@@ -14,6 +14,7 @@ const Recommendations = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const mood = location.state?.mood;
+  const guestQuiz = location.state?.quiz;
   const { isGuest } = useAuth();
 
   const [items, setItems] = useState([]);
@@ -26,7 +27,8 @@ const Recommendations = () => {
     setError("");
     try {
       const endpoint = isGuest ? "/recommendations/guest" : "/recommendations";
-      const { data } = await api.post(endpoint, { mood });
+      const payload = isGuest ? { mood, quiz: guestQuiz } : { mood };
+      const { data } = await api.post(endpoint, payload);
       setItems(data.recommendations);
     } catch (err) {
       if (!err.response) {

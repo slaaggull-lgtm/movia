@@ -30,6 +30,7 @@ const Quiz = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { updateUser } = useAuth();
+  const isGuest = location.state?.guest === true;
   const totalSteps = 5;
 
   const toggleGenre = (g) => {
@@ -38,19 +39,30 @@ const Quiz = () => {
     );
   };
 
+  const quizPayload = {
+    favoriteGenres,
+    preferredType,
+    likesAnimation,
+    likesAnime,
+    preferredDuration,
+    bingeStyle,
+  };
+
   const handleFinish = async () => {
     setLoading(true);
     try {
-      const { data } = await api.post("/users/quiz", {
-        favoriteGenres,
-        preferredType,
-        likesAnimation,
-        likesAnime,
-        preferredDuration,
-        bingeStyle,
-      });
+      const mood = location.state?.mood || "happy";
+
+      if (isGuest) {
+        // Misafir modu: hesap yok, bu yüzden backend'e kaydetmiyoruz.
+        // Test cevaplarını doğrudan öneri sayfasına taşıyoruz.
+        navigate("/recommendations", { state: { mood, guest: true, quiz: quizPayload } });
+        return;
+      }
+
+      const { data } = await api.post("/users/quiz", quizPayload);
       updateUser({ quiz: data.quiz });
-      navigate("/recommendations", { state: { mood: location.state?.mood || "happy" } });
+      navigate("/recommendations", { state: { mood } });
     } finally {
       setLoading(false);
     }
