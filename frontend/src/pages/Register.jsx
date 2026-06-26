@@ -1,15 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
-const AVATAR_OPTIONS = [
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Movia1",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Movia2",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Movia3",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Movia4",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Movia5",
-  "https://api.dicebear.com/7.x/avataaars/svg?seed=Movia6",
-];
+import { AVATAR_OPTIONS, DEFAULT_AVATAR } from "../utils/avatars";
 
 const Register = () => {
   const [form, setForm] = useState({
@@ -18,7 +10,7 @@ const Register = () => {
     username: "",
     email: "",
     password: "",
-    avatar: AVATAR_OPTIONS[0],
+    avatar: DEFAULT_AVATAR,
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,12 +22,26 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (form.password.length < 6) {
+      setError("Şifre en az 6 karakter olmalıdır.");
+      return;
+    }
+
     setLoading(true);
     try {
       await register(form);
       navigate("/quiz");
     } catch (err) {
-      setError(err.response?.data?.message || "Kayıt başarısız oldu.");
+      if (!err.response) {
+        // Sunucuya hiç ulaşılamadı: backend çalışmıyor, yanlış VITE_API_URL,
+        // veya CORS engeli olabilir.
+        setError(
+          "Sunucuya bağlanılamadı. Backend'in çalıştığından ve frontend'deki VITE_API_URL adresinin doğru olduğundan emin ol."
+        );
+      } else {
+        setError(err.response?.data?.message || "Kayıt başarısız oldu.");
+      }
     } finally {
       setLoading(false);
     }
@@ -50,7 +56,9 @@ const Register = () => {
         </p>
 
         {error && (
-          <div className="bg-red-100 text-red-700 text-sm p-3 rounded-xl mb-4">{error}</div>
+          <div className="bg-red-100 text-red-700 text-sm p-3 rounded-xl mb-4 fade-in">
+            ⚠️ {error}
+          </div>
         )}
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -59,6 +67,7 @@ const Register = () => {
               name="firstName"
               placeholder="Ad"
               className="input-field"
+              value={form.firstName}
               onChange={handleChange}
               required
             />
@@ -66,6 +75,7 @@ const Register = () => {
               name="lastName"
               placeholder="Soyad"
               className="input-field"
+              value={form.lastName}
               onChange={handleChange}
               required
             />
@@ -74,6 +84,7 @@ const Register = () => {
             name="username"
             placeholder="Kullanıcı adı"
             className="input-field"
+            value={form.username}
             onChange={handleChange}
             required
           />
@@ -82,32 +93,39 @@ const Register = () => {
             name="email"
             placeholder="E-posta"
             className="input-field"
+            value={form.email}
             onChange={handleChange}
             required
           />
           <input
             type="password"
             name="password"
-            placeholder="Şifre"
+            placeholder="Şifre (en az 6 karakter)"
             className="input-field"
+            value={form.password}
             onChange={handleChange}
             required
             minLength={6}
           />
 
           <div>
-            <p className="text-sm font-medium mb-2">Profil fotoğrafı seç:</p>
-            <div className="flex gap-2 flex-wrap">
-              {AVATAR_OPTIONS.map((url) => (
-                <img
-                  key={url}
-                  src={url}
-                  onClick={() => setForm({ ...form, avatar: url })}
-                  className={`w-12 h-12 rounded-full cursor-pointer border-2 ${
-                    form.avatar === url ? "border-movia-purple scale-110" : "border-transparent"
-                  } transition-all`}
-                  alt="avatar option"
-                />
+            <p className="text-sm font-medium mb-2">Profil avatarını seç:</p>
+            <div className="grid grid-cols-6 gap-2">
+              {AVATAR_OPTIONS.map((opt) => (
+                <button
+                  type="button"
+                  key={opt.emoji}
+                  onClick={() => setForm({ ...form, avatar: opt.emoji })}
+                  className={`w-11 h-11 rounded-full flex items-center justify-center text-xl transition-all ${
+                    form.avatar === opt.emoji
+                      ? "ring-3 ring-offset-2 ring-movia-purple scale-110"
+                      : "opacity-80 hover:opacity-100 hover:scale-105"
+                  }`}
+                  style={{ background: opt.bg }}
+                  title={opt.emoji}
+                >
+                  {opt.emoji}
+                </button>
               ))}
             </div>
           </div>

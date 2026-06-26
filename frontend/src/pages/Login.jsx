@@ -18,7 +18,13 @@ const Login = () => {
       await login(email, password);
       navigate("/mood");
     } catch (err) {
-      setError(err.response?.data?.message || "Giriş başarısız oldu.");
+      if (!err.response) {
+        setError(
+          "Sunucuya bağlanılamadı. Backend'in çalıştığından ve frontend'deki VITE_API_URL adresinin doğru olduğundan emin ol."
+        );
+      } else {
+        setError(err.response?.data?.message || "Giriş başarısız oldu.");
+      }
     } finally {
       setLoading(false);
     }

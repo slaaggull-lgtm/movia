@@ -6,7 +6,9 @@ export const ThemeProvider = ({ children }) => {
   const [dark, setDark] = useState(() => {
     const stored = localStorage.getItem("movia_theme");
     if (stored) return stored === "dark";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    // Movia varsayılan olarak karanlık temayla açılır.
+    // Kullanıcı değiştirirse tercihi yukarıdaki localStorage'da saklanır.
+    return true;
   });
 
   useEffect(() => {

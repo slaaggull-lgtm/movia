@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../api/axios";
 import MovieCard from "../components/MovieCard";
+import AvatarCircle from "../components/AvatarCircle";
+import { AVATAR_OPTIONS } from "../utils/avatars";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
@@ -9,7 +11,7 @@ const Profile = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
-  const [form, setForm] = useState({ firstName: "", lastName: "", username: "" });
+  const [form, setForm] = useState({ firstName: "", lastName: "", username: "", avatar: "" });
 
   const fetchProfile = async () => {
     setLoading(true);
@@ -19,6 +21,7 @@ const Profile = () => {
       firstName: data.user.firstName,
       lastName: data.user.lastName,
       username: data.user.username,
+      avatar: data.user.avatar,
     });
     setLoading(false);
   };
@@ -41,7 +44,7 @@ const Profile = () => {
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
       <div className="bg-white dark:bg-movia-card rounded-2xl card-shadow p-8 mb-8 flex flex-col sm:flex-row items-center gap-6 fade-in">
-        <img src={user.avatar} alt={user.username} className="w-24 h-24 rounded-full border-4 border-movia-purple object-cover" />
+        <AvatarCircle avatar={editing ? form.avatar : user.avatar} size={96} className="border-4 border-movia-purple" />
         <div className="flex-1 text-center sm:text-left">
           {editing ? (
             <div className="flex flex-col gap-2">
@@ -62,7 +65,30 @@ const Profile = () => {
                 value={form.username}
                 onChange={(e) => setForm({ ...form, username: e.target.value })}
               />
-              <div className="flex gap-2">
+
+              <div>
+                <p className="text-sm font-medium mb-1">Avatarını değiştir:</p>
+                <div className="grid grid-cols-6 sm:grid-cols-9 gap-2">
+                  {AVATAR_OPTIONS.map((opt) => (
+                    <button
+                      type="button"
+                      key={opt.emoji}
+                      onClick={() => setForm({ ...form, avatar: opt.emoji })}
+                      className={`w-9 h-9 rounded-full flex items-center justify-center text-lg transition-all ${
+                        form.avatar === opt.emoji
+                          ? "ring-2 ring-offset-2 ring-movia-purple scale-110"
+                          : "opacity-80 hover:opacity-100"
+                      }`}
+                      style={{ background: opt.bg }}
+                      title={opt.emoji}
+                    >
+                      {opt.emoji}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex gap-2 mt-1">
                 <button onClick={handleSave} className="btn-primary !px-4 !py-1.5 text-sm">Kaydet</button>
                 <button onClick={() => setEditing(false)} className="btn-secondary !px-4 !py-1.5 text-sm">Vazgeç</button>
               </div>

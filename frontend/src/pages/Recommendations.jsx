@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import { useAuth } from "../context/AuthContext";
 import MovieCard from "../components/MovieCard";
 import BadgeToast from "../components/BadgeToast";
 
@@ -13,6 +14,7 @@ const Recommendations = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const mood = location.state?.mood;
+  const { isGuest } = useAuth();
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,10 +25,17 @@ const Recommendations = () => {
     setLoading(true);
     setError("");
     try {
-      const { data } = await api.post("/recommendations", { mood });
+      const endpoint = isGuest ? "/recommendations/guest" : "/recommendations";
+      const { data } = await api.post(endpoint, { mood });
       setItems(data.recommendations);
     } catch (err) {
-      setError(err.response?.data?.message || "Öneriler alınamadı.");
+      if (!err.response) {
+        setError(
+          "Sunucuya bağlanılamadı. Backend'in çalıştığından ve VITE_API_URL adresinin doğru olduğundan emin ol."
+        );
+      } else {
+        setError(err.response?.data?.message || "Öneriler alınamadı.");
+      }
     } finally {
       setLoading(false);
     }
@@ -46,8 +55,24 @@ const Recommendations = () => {
     if (data.newBadges?.length) setNewBadges(data.newBadges);
   };
 
+  const guestAction = () => {
+    const wantsToRegister = window.confirm(
+      "Bu özelliği (favori/izleme listesi/izledi) kullanmak için ücretsiz hesap oluşturman gerekiyor. Şimdi kayıt olmak ister misin?"
+    );
+    if (wantsToRegister) navigate("/register");
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
+      {isGuest && (
+        <div className="bg-movia-purple/10 text-movia-purple dark:bg-movia-purple/20 dark:text-purple-300 text-sm rounded-xl px-4 py-3 mb-8 flex flex-wrap items-center justify-between gap-2">
+          <span>🧪 Misafir modundasın. Favori/izleme listesi/puanlama için ücretsiz hesap oluştur.</span>
+          <button onClick={() => navigate("/register")} className="btn-primary !px-3 !py-1.5 text-xs">
+            Ücretsiz Kayıt Ol
+          </button>
+        </div>
+      )}
+
       <div className="text-center mb-10">
         <h1 className="text-2xl sm:text-3xl font-bold mb-2">
           {mood && MOOD_LABELS[mood]} ruh haline göre önerilerin 🎯
@@ -71,9 +96,9 @@ const Recommendations = () => {
             <MovieCard
               key={`${item.mediaType}-${item.tmdbId}`}
               item={item}
-              onFavorite={(i) => saveItem(i, "favorite")}
-              onWatchlist={(i) => saveItem(i, "watchlist")}
-              onWatched={(i) => saveItem(i, "watched")}
+              onFavorite={isGuest ? guestAction : (i) => saveItem(i, "favorite")}
+              onWatchlist={isGuest ? guestAction : (i) => saveItem(i, "watchlist")}
+              onWatched={isGuest ? guestAction : (i) => saveItem(i, "watched")}
             />
           ))}
         </div>

@@ -1,15 +1,21 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
+import AvatarCircle from "./AvatarCircle";
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, isGuest, endGuestTrial } = useAuth();
   const { dark, toggleTheme } = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate("/login");
+  };
+
+  const handleEndGuest = () => {
+    endGuestTrial();
+    navigate("/");
   };
 
   return (
@@ -42,12 +48,20 @@ const Navbar = () => {
               <Link to="/stats" className="hidden sm:inline text-sm font-medium hover:text-movia-purple">
                 📊 İstatistik
               </Link>
-              <img
-                src={user.avatar}
-                alt={user.username}
-                className="w-9 h-9 rounded-full border-2 border-movia-purple object-cover"
-              />
+              <AvatarCircle avatar={user.avatar} size={36} className="border-2 border-movia-purple" />
               <button onClick={handleLogout} className="btn-secondary !px-3 !py-1.5 text-sm">
+                Çıkış
+              </button>
+            </>
+          ) : isGuest ? (
+            <>
+              <span className="hidden sm:inline text-xs font-semibold bg-movia-purple/10 text-movia-purple dark:bg-movia-purple/20 dark:text-purple-300 px-3 py-1.5 rounded-full">
+                🧪 Misafir Modu
+              </span>
+              <Link to="/register" className="btn-primary !px-4 !py-1.5 text-sm">
+                Ücretsiz Kayıt Ol
+              </Link>
+              <button onClick={handleEndGuest} className="btn-secondary !px-3 !py-1.5 text-sm">
                 Çıkış
               </button>
             </>

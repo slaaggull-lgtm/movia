@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     avatar: {
       type: String,
-      default: "https://api.dicebear.com/7.x/avataaars/svg?seed=Movia",
+      default: "🦊",
     },
 
     // Personality quiz results

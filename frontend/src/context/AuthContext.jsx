@@ -5,6 +5,7 @@ const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isGuest, setIsGuest] = useState(() => localStorage.getItem("movia_guest") === "true");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,6 +21,7 @@ export const AuthProvider = ({ children }) => {
     const { data } = await api.post("/auth/login", { email, password });
     localStorage.setItem("movia_token", data.token);
     localStorage.setItem("movia_user", JSON.stringify(data));
+    endGuestTrial();
     setUser(data);
     return data;
   };
@@ -28,6 +30,7 @@ export const AuthProvider = ({ children }) => {
     const { data } = await api.post("/auth/register", payload);
     localStorage.setItem("movia_token", data.token);
     localStorage.setItem("movia_user", JSON.stringify(data));
+    endGuestTrial();
     setUser(data);
     return data;
   };
@@ -44,8 +47,31 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("movia_user", JSON.stringify(updated));
   };
 
+  // Misafir/deneme modu: hesap oluşturmadan uygulamayı denemeye izin verir.
+  const startGuestTrial = () => {
+    localStorage.setItem("movia_guest", "true");
+    setIsGuest(true);
+  };
+
+  const endGuestTrial = () => {
+    localStorage.removeItem("movia_guest");
+    setIsGuest(false);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, updateUser }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        register,
+        logout,
+        updateUser,
+        isGuest,
+        startGuestTrial,
+        endGuestTrial,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
